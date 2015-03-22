@@ -1,0 +1,29 @@
+introduction:
+
+this project penetrates the supposed "security" of some frequency-hopping spread-spectrum (fhss) schemes used in smart meters and other embedded systems.  
+
+
+
+concepts:
+
+most fhss systems use a relatively finite pattern of channels in their hopping pattern, normally repeating in less than three hundred (300) channels.  several other characteristics define the way the network operates, such as channel spacing, sync-word, hop-duration, joining-sync-style, all of which this toolset should eventually identify automagically.
+
+for the first release, we are after the hopping pattern.  from there, analysis becomes simple, and a network adaptor should then be crafted.  this toolset should also help there as well.
+
+the more advanced goals include two types of what we're calling "predictive analysis".  obviously, if we were to use a USRP2, we could suck in the whole band and process it, but with our imme's and cc1111 dongles we're much much cheaper, and more restricted.  
+
+predictive analysis modes planned:
+
+* channel-guessing - systematically start at each channel, waiting for a packet, and then hopping to another channel to determine the relationship with the other channel.  wash, rinse, repeat about 10 times each.  in a typical fhss hopping pattern (at least those in nonmilitary implementations) these patterns will include approximately 4 passes through the channels before repeating.  10 times seems like a decent amount to find a marriage between different channels.  once these relationships are fleshed out, they can be pieced together to form a finite number of possible patterns which can then be individually tested.
+
+* time-matching - systematically wait for packets on one channel, and time when it arrives.  then wait and record when the next packet arrives on that channel.  performing this analysis until the timing repeats several times should provide a good indicator of hopping footprint for that channel.  perform this for each channel, and piece together the repeated patterns like a puzzle.
+
+* these two can potentially be leveraged together to increase the efficiency of the scanning.
+
+the toolset we have selected is the chipcon 1110/1111 family of microcontrollers, particularly playing with the GirlTech IM-ME dongle, the TI CC1111EMK, and the TI Chronos dongle.  these chips all play very well in the sub-gigahertz ism band.  if 2.4ghz, 5.8ghz or other >1ghz spectrum is desired, these concepts may be ported to a different radio chip, possibly the cc2431 or similar radio.
+
+authors:
+
+atlas
+cutaway
+q
